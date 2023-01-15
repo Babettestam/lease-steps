@@ -8,18 +8,18 @@ const colors = {
   },
 };
 
-const theme = extendTheme({ colors });
+const sizes = {
+  xl: '60rem',
+};
+
+const theme = extendTheme({ colors, sizes });
 
 interface Props {
   children: React.ReactElement | React.ReactElement[];
 }
 
 const ThemeContainer: React.FC<Props> = ({ children }) => {
-  return (
-    <ChakraProvider resetCSS theme={theme}>
-      {children}
-    </ChakraProvider>
-  );
+  return <ChakraProvider theme={theme}>{children}</ChakraProvider>;
 };
 
 export default ThemeContainer;
