@@ -9,7 +9,6 @@ export type StepId =
 export interface Step {
   id: StepId;
   description: string;
-  complete: boolean;
 }
 
 export type LeaseType = 'FINANCIAL' | 'OPERATIONAL' | 'SALE_AND_LEASEBACK';
@@ -23,4 +22,7 @@ export interface MachineForm {
   condition: ConditionType;
   value: number;
   leaseType: LeaseType;
+}
+export interface CustomGlobalState {
+  MACHINE: MachineForm;
 }

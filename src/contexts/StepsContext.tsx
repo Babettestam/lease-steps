@@ -1,6 +1,8 @@
-import { Step, LeaseType } from '@types';
-import React, { ReactElement, createContext, useEffect, useState, useMemo } from 'react';
+import { Step } from '@types';
+import React, { ReactElement, createContext, useState, useMemo } from 'react';
 import { getStepsBasedOnType } from 'utils/stepsUtils';
+import { useStateMachine } from 'little-state-machine';
+import { milageStep } from 'constants/LeaseSteps';
 
 interface Props {
   children: React.ReactElement | React.ReactElement[];
@@ -12,8 +14,7 @@ export interface StepsContextValues {
   activeStep?: Step;
   goToPreviousStep: () => void;
   goToNextStep: () => void;
-  leaseType?: LeaseType;
-  setLeaseType: React.Dispatch<React.SetStateAction<LeaseType | undefined>>;
+  resetStep: () => void;
 }
 
 const StepsContext = createContext<StepsContextValues>({
@@ -22,26 +23,31 @@ const StepsContext = createContext<StepsContextValues>({
   activeStep: undefined,
   goToPreviousStep: () => console.warn('Provider not implemented'),
   goToNextStep: () => console.warn('Provider not implemented'),
-  leaseType: 'FINANCIAL',
-  setLeaseType: () => console.warn('Provider not implemented'),
+  resetStep: () => console.warn('Provider not implemented'),
 });
 
 const StepsProvider = ({ children }: Props): ReactElement => {
-  const [leaseType, setLeaseType] = useState<LeaseType | undefined>('FINANCIAL');
-  const [steps, setSteps] = useState<Step[]>(() => getStepsBasedOnType(leaseType));
+  const { state } = useStateMachine();
+  const steps = useMemo<Step[]>(() => {
+    const stepsBase = getStepsBasedOnType(state.MACHINE.leaseType);
+
+    if (state.MACHINE.condition === 'USED') {
+      // When machine condition is USED we need an additional step: milage
+      return [...stepsBase, milageStep];
+    }
+
+    return stepsBase;
+  }, [state, state.MACHINE.leaseType, state.MACHINE.condition]);
+
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
   const activeStep = useMemo<Step | undefined>(
     () => steps[activeStepIndex],
     [steps, activeStepIndex]
   );
 
-  useEffect(() => {
-    setActiveStepIndex(0);
-    setSteps(getStepsBasedOnType(leaseType));
-  }, [leaseType]);
-
   const goToPreviousStep = (): void => changeStep(activeStepIndex - 1);
   const goToNextStep = (): void => changeStep(activeStepIndex + 1);
+  const resetStep = (): void => setActiveStepIndex(0);
   const changeStep = (newStepIndex: number): void => {
     const hasAnotherStep = steps[newStepIndex] !== undefined;
     if (newStepIndex >= 0 && hasAnotherStep) {
@@ -57,8 +63,7 @@ const StepsProvider = ({ children }: Props): ReactElement => {
         activeStep,
         goToPreviousStep,
         goToNextStep,
-        leaseType,
-        setLeaseType,
+        resetStep,
       }}
     >
       {children}

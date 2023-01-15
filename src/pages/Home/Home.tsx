@@ -2,6 +2,10 @@ import React from 'react';
 import { Box, Button, Heading, useBoolean } from '@chakra-ui/react';
 import { StepsProvider } from 'contexts/StepsContext';
 import LeaseFormModal from 'components/LeaseForm/LeaseFormModal';
+import { StateMachineProvider, createStore } from 'little-state-machine';
+import { INITIAL_FORMS } from 'constants/FormDetails';
+
+createStore(INITIAL_FORMS);
 
 const Home: React.FC = () => {
   const [modalActive, setModalActive] = useBoolean(false);
@@ -15,9 +19,11 @@ const Home: React.FC = () => {
         </Button>
       </Box>
 
-      <StepsProvider>
-        <LeaseFormModal isOpen={modalActive} closeForm={setModalActive.off} />
-      </StepsProvider>
+      <StateMachineProvider>
+        <StepsProvider>
+          <LeaseFormModal isOpen={modalActive} closeForm={setModalActive.off} />
+        </StepsProvider>
+      </StateMachineProvider>
     </Box>
   );
 };

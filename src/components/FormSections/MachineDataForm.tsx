@@ -12,27 +12,48 @@ import StyledSelect from 'components/shared/StyledSelect';
 import StyledFormLabel from 'components/shared/StyledFormLabel';
 import { generateYearsList } from 'utils/years';
 import StyledInput from 'components/shared/StyledInput';
-import useStepsContext from 'hooks/useStepsContext';
-import { LeaseType } from '@types';
+import { ConditionType, CustomGlobalState, LeaseType } from '@types';
+import { useFormContext } from 'react-hook-form';
+import { useStateMachine } from 'little-state-machine';
+
+// Only update the lease type so
+function updateMachineState(
+  state: CustomGlobalState,
+  payload: Partial<CustomGlobalState['MACHINE']>
+): CustomGlobalState {
+  return {
+    ...state,
+    MACHINE: {
+      ...state.MACHINE,
+      ...payload,
+    },
+  };
+}
 
 const MachineDataForm: React.FC = () => {
-  const { leaseType, setLeaseType } = useStepsContext();
+  const { register, setValue, watch } = useFormContext();
+  const watchCondition = watch('MACHINE.condition', false); // you can supply default value as second argument
+  const watchLeaseType = watch('MACHINE.leaseType', false); // you can supply default value as second argument
+  const { actions } = useStateMachine({ updateMachineState });
 
   return (
     <SimpleGrid columns={2} spacing={5}>
-      <FormControl>
+      <FormControl {...register('MACHINE.brand')}>
         <StyledFormLabel>Merk</StyledFormLabel>
-        <StyledInput />
+        <StyledInput onChange={(e): void => setValue('MACHINE.brand', e.target.value)} />
       </FormControl>
 
-      <FormControl>
+      <FormControl {...register('MACHINE.model')}>
         <StyledFormLabel>Model</StyledFormLabel>
-        <StyledInput />
+        <StyledInput onChange={(e): void => setValue('MACHINE.model', e.target.value)} />
       </FormControl>
 
-      <FormControl>
+      <FormControl {...register('MACHINE.buildYear')}>
         <StyledFormLabel>Bouwjaar</StyledFormLabel>
-        <StyledSelect placeholder="Selecteer model">
+        <StyledSelect
+          placeholder="Selecteer model"
+          onChange={(e): void => setValue('MACHINE.buildYear', e.target.value)}
+        >
           {generateYearsList(1900)
             .reverse()
             .map(model => (
@@ -43,9 +64,16 @@ const MachineDataForm: React.FC = () => {
         </StyledSelect>
       </FormControl>
 
-      <FormControl>
+      <FormControl {...register('MACHINE.condition')}>
         <StyledFormLabel>Conditie</StyledFormLabel>
-        <RadioGroup colorScheme="orange">
+        <RadioGroup
+          colorScheme="orange"
+          value={watchCondition}
+          onChange={(value): void => {
+            setValue('MACHINE.condition', value);
+            actions.updateMachineState({ condition: value as ConditionType });
+          }}
+        >
           <Stack direction="row" gap="1rem" paddingTop=".5rem">
             <Radio size="sm" value="USED">
               Gebruikt
@@ -57,19 +85,27 @@ const MachineDataForm: React.FC = () => {
         </RadioGroup>
       </FormControl>
 
-      <FormControl>
+      <FormControl {...register('MACHINE.value')}>
         <StyledFormLabel>Waarde</StyledFormLabel>
         <InputGroup>
           <InputLeftAddon bg="#e5e6e7">€</InputLeftAddon>
-          <StyledInput type="number" borderTopLeftRadius={0} borderBottomLeftRadius={0} />
+          <StyledInput
+            type="number"
+            borderTopLeftRadius={0}
+            borderBottomLeftRadius={0}
+            onChange={(e): void => setValue('MACHINE.value', e.target.value)}
+          />
         </InputGroup>
       </FormControl>
 
-      <FormControl>
+      <FormControl {...register('MACHINE.leaseType')}>
         <StyledFormLabel>Leasevorm</StyledFormLabel>
         <RadioGroup
-          value={leaseType}
-          onChange={(value): void => setLeaseType(value as LeaseType)}
+          value={watchLeaseType}
+          onChange={(value): void => {
+            setValue('MACHINE.leaseType', value);
+            actions.updateMachineState({ leaseType: value as LeaseType });
+          }}
           colorScheme="orange"
         >
           <Stack direction="row" gap="1rem" paddingTop=".5rem">

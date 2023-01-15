@@ -12,6 +12,8 @@ const FormSectionContainer: React.FC<Props> = ({ stepId }) => {
     return <MachineDataForm />;
   }
 
+  // Other forms...
+
   return (
     <Box>
       <Text>Form not yet implemented {stepId}</Text>
