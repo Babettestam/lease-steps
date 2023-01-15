@@ -1,27 +1,22 @@
-import React, { useState } from 'react';
-import { Box, Button } from '@chakra-ui/react';
-import { LeaseType } from '@types';
+import React from 'react';
+import { Box, Button, Heading, useBoolean } from '@chakra-ui/react';
 import { StepsProvider } from 'contexts/StepsContext';
-import LeaseForm from 'components/LeaseForm/LeaseForm';
+import LeaseFormModal from 'components/LeaseForm/LeaseFormModal';
 
 const Home: React.FC = () => {
-  const [activeLeaseType, setActiveLeaseType] = useState<LeaseType>();
-  const handleFinancialClick = (): void => setActiveLeaseType('FINANCIAL_AND_OPERATIONAL');
-  const handleSaleClick = (): void => setActiveLeaseType('SALE_AND_LEASEBACK');
+  const [modalActive, setModalActive] = useBoolean(false);
 
   return (
     <Box display="flex" alignItems="center" justifyContent="center" height="100vh">
-      <Box display="flex" gap="1rem">
-        <Button colorScheme="blue" onClick={handleFinancialClick}>
-          Start financial and operational lease
-        </Button>
-        <Button colorScheme="yellow" onClick={handleSaleClick}>
-          Start sale and lease-back lease
+      <Box display="flex" flexDirection="column" alignItems="center" gap="2rem">
+        <Heading>Beequip assignment</Heading>
+        <Button colorScheme="blue" onClick={setModalActive.on}>
+          Start
         </Button>
       </Box>
 
-      <StepsProvider leaseType={activeLeaseType}>
-        <LeaseForm closeForm={(): void => setActiveLeaseType(undefined)} />
+      <StepsProvider>
+        <LeaseFormModal isOpen={modalActive} closeForm={setModalActive.off} />
       </StepsProvider>
     </Box>
   );

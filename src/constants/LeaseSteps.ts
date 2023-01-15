@@ -1,25 +1,25 @@
 import { Step } from '@types';
 
 const machineDataStep: Step = {
-  id: 'machine_data',
+  id: 'MACHINE_DATA',
   description: 'Kloppen de gegevens nog?',
   complete: false,
 };
 
 const rentalStep: Step = {
-  id: 'rental',
+  id: 'RENTAL',
   description: '...',
   complete: false,
 };
 
 const leaseDetailStep: Step = {
-  id: 'lease_details',
+  id: 'LEASE_DETAIL',
   description: '...',
   complete: false,
 };
 
 export const milageStep: Step = {
-  id: 'milage',
+  id: 'MILAGE',
   description: '...',
   complete: false,
 };
@@ -28,14 +28,14 @@ export const milageStep: Step = {
 export const FINANCIAL_AND_OPERATIONAL_STEPS: Step[] = [
   machineDataStep,
   {
-    id: 'supplier',
+    id: 'SUPPLIER',
     description: '...',
     complete: false,
   },
   rentalStep,
   leaseDetailStep,
   {
-    id: 'vat_financing',
+    id: 'VAT_FINANCING',
     description: '...',
     complete: false,
   },

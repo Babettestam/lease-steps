@@ -6,6 +6,9 @@ const colors = {
     800: '#d28500',
     700: '#ffa100',
   },
+  gray: {
+    100: '#f6f6f6',
+  },
 };
 
 const sizes = {

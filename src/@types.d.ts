@@ -1,7 +1,26 @@
+export type StepId =
+  | 'MACHINE_DATA'
+  | 'RENTAL'
+  | 'LEASE_DETAIL'
+  | 'MILAGE'
+  | 'SUPPLIER'
+  | 'VAT_FINANCING';
+
 export interface Step {
-  id: string;
+  id: StepId;
   description: string;
   complete: boolean;
 }
 
-export type LeaseType = 'FINANCIAL_AND_OPERATIONAL' | 'SALE_AND_LEASEBACK';
+export type LeaseType = 'FINANCIAL' | 'OPERATIONAL' | 'SALE_AND_LEASEBACK';
+
+export type ConditionType = 'USED' | 'NEW';
+
+export interface MachineForm {
+  brand: string;
+  model: string;
+  buildYear: string;
+  condition: ConditionType;
+  value: number;
+  leaseType: LeaseType;
+}
