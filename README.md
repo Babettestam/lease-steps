@@ -1,6 +1,36 @@
-# Getting Started with Create React App
+# Lease steps
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Frontend engineer assignment
+
+> We'll be using this test to assess your skill level as a frontend developer. It resembles the day-to-day work you’d be doing at Beequip. We estimate it will take you between 4 to 6 hours.
+
+### Objectives and requirements
+
+Build a simple single page app to edit lease data according to this Figma design:
+
+[https://www.figma.com/file/79fCCNzyIhTI9T9k5e9eJv/Job-Assignment-Frontend---Modal](https://www.figma.com/file/79fCCNzyIhTI9T9k5e9eJv/Job-Assignment-Frontend---Modal)
+
+- [] The machine’s data should be stored somewhere in the state.
+- [] The steps in the indicator are dynamic:
+  - [] Financial and operational leases have 5 steps: machine data, supplier, rental, lease details, VAT financing
+  - [] Sale & leaseback-leases have 3 steps: machine data, rental, lease details
+  - [] When an object is used, an extra step for the milage is added
+- [] You don’t need to implement all steps other than the first one, just show empty pages with a next-button, or just the changing of the step indicator.
+
+<b>Notes</b>
+
+- [x] React is a requirement. The rest is up to you.
+- [x] We are happy users of TypeScript. It’s optional for this assignment, but we would appreciate it if you tried.
+- [x] Use a UI component library or write your own styles; whatever works fastest or best for you.
+- [] Automated tests are optional.
+- [] The same goes for animations.
+- [x] Please structure your commits and your files properly so that other developers can work with them.
+
+- [] When discussing your submission, we’ll ask you about your architectural choices, what you would do differently, and whether you see any improvements.
+
+### Improvement suggestions
+
+-
 
 ## Available Scripts
 
