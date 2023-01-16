@@ -14,6 +14,7 @@ export interface StepsContextValues {
   activeStep?: Step;
   goToPreviousStep: () => void;
   goToNextStep: () => void;
+  goToStep: ({ stepId }: { stepId: string }) => void;
   resetStep: () => void;
 }
 
@@ -23,6 +24,7 @@ const StepsContext = createContext<StepsContextValues>({
   activeStep: undefined,
   goToPreviousStep: () => console.warn('Provider not implemented'),
   goToNextStep: () => console.warn('Provider not implemented'),
+  goToStep: () => console.warn('Provider not implemented'),
   resetStep: () => console.warn('Provider not implemented'),
 });
 
@@ -48,6 +50,10 @@ const StepsProvider = ({ children }: Props): ReactElement => {
   const goToPreviousStep = (): void => changeStep(activeStepIndex - 1);
   const goToNextStep = (): void => changeStep(activeStepIndex + 1);
   const resetStep = (): void => setActiveStepIndex(0);
+  const goToStep = ({ stepId }: { stepId: string }): void => {
+    const stepIndex = steps.findIndex(({ id }): boolean => id === stepId);
+    changeStep(stepIndex);
+  };
   const changeStep = (newStepIndex: number): void => {
     const hasAnotherStep = steps[newStepIndex] !== undefined;
     if (newStepIndex >= 0 && hasAnotherStep) {
@@ -63,6 +69,7 @@ const StepsProvider = ({ children }: Props): ReactElement => {
         activeStep,
         goToPreviousStep,
         goToNextStep,
+        goToStep,
         resetStep,
       }}
     >

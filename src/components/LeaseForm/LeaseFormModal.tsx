@@ -36,8 +36,15 @@ function resetStore(): CustomGlobalState {
 }
 
 const LeaseFormModal: React.FC<Props> = ({ isOpen, closeForm }) => {
-  const { steps, activeStepIndex, activeStep, goToPreviousStep, goToNextStep, resetStep } =
-    useStepsContext();
+  const {
+    steps,
+    activeStepIndex,
+    activeStep,
+    goToStep,
+    goToPreviousStep,
+    goToNextStep,
+    resetStep,
+  } = useStepsContext();
   const { actions, state } = useStateMachine({ updateFormState, resetStore });
 
   const atFirstStep = activeStepIndex === 0;
@@ -66,14 +73,18 @@ const LeaseFormModal: React.FC<Props> = ({ isOpen, closeForm }) => {
   return (
     <FormProvider {...methods}>
       <Modal isOpen={isOpen} onClose={closeForm} size="xl" isCentered closeOnOverlayClick={false}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <form onSubmit={methods.handleSubmit(onSubmit)} aria-label="form">
           <ModalContent>
             <ModalHeader padding="2rem">
               <ModalCloseButton mt="1.2rem" mr="1.2rem" />
               <Heading as="h2" size="md" fontWeight={600} marginBottom="1rem">
                 {activeStepIndex + 1}. Scania R730 - Topline Hydroliek
               </Heading>
-              <StepIndicator steps={steps} activeStepIndex={activeStepIndex} />
+              <StepIndicator
+                steps={steps}
+                activeStepIndex={activeStepIndex}
+                onStepClick={goToStep}
+              />
             </ModalHeader>
             <ModalBody>
               <Text fontWeight={500} fontSize="lg" marginBottom="2rem">
