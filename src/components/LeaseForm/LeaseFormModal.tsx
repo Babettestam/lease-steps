@@ -78,7 +78,7 @@ const LeaseFormModal: React.FC<Props> = ({ isOpen, closeForm }) => {
             <ModalHeader padding="2rem">
               <ModalCloseButton mt="1.2rem" mr="1.2rem" />
               <Heading as="h2" size="md" fontWeight={600} marginBottom="1rem">
-                {activeStepIndex + 1}. Scania R730 - Topline Hydroliek
+                {activeStepIndex + 1}. {state.MACHINE.brand} {state.MACHINE.model}
               </Heading>
               <StepIndicator
                 steps={steps}
