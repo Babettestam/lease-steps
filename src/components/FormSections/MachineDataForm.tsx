@@ -37,7 +37,7 @@ const MachineDataForm: React.FC = () => {
   const { actions } = useStateMachine({ updateMachineState });
 
   return (
-    <SimpleGrid columns={2} spacing={5}>
+    <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={5}>
       <FormControl {...register('MACHINE.brand')}>
         <StyledFormLabel>Merk</StyledFormLabel>
         <StyledInput onChange={(e): void => setValue('MACHINE.brand', e.target.value)} />
